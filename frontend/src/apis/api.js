@@ -1,4 +1,4 @@
-const Base_url = "https://your-backend-url.onrender.com";
+const Base_url = "https://bloggapp-backend-ohnc.onrender.com";
 
 
 export default {

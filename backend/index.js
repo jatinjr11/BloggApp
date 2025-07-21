@@ -20,11 +20,22 @@ const MONGO_URI = process.env.MONGO_URI
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowedOrigins = [
+  'http://localhost:5173', // local
+  'https://bloggapp-frontend-0t1l.onrender.com', // ✅ deployed
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // ✅ Make sure this matches exactly (no typo or trailing slash)
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // ✅ MUST for cookies to work cross-origin
 }));
+
 
 app.use(fileUpload({
   useTempFiles: true,
